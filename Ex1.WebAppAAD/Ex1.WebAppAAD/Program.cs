@@ -1,7 +1,23 @@
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(options =>
+    {
+        options.Instance = "https://login.microsoftonline.com/";
+        options.ClientId = "{AAD ClientId}";
+        options.TenantId = "{AAD TenantId}";
+        options.ClientSecret = "{AAD secret}";
+        options.CallbackPath = "/signin-oidc";
+    });
+
+builder.Services.AddRazorPages().AddMicrosoftIdentityUI();
 
 var app = builder.Build();
 
@@ -18,6 +34,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

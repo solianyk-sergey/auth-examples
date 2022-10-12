@@ -1,6 +1,9 @@
 ﻿using Ex1.WebAppAAD.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Ex1.WebAppAAD.Controllers
 {
@@ -18,9 +21,17 @@ namespace Ex1.WebAppAAD.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [Authorize]
+        public IActionResult Claims()
         {
-            return View();
+            return View("Claims", User.Claims.ToList());
+        }
+
+
+        public IActionResult Logout()
+        {
+            SignOut();
+            return View("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
