@@ -4,7 +4,6 @@ using Microsoft.Identity.Web.UI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
@@ -17,11 +16,12 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         options.CallbackPath = "/signin-oidc";
     });
 
+// This is a dependency to use AddMicrosoftIdentityWebApp
 builder.Services.AddRazorPages().AddMicrosoftIdentityUI();
 
+// configure pipeline
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
